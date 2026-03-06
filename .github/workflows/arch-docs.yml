@@ -24,9 +24,11 @@ jobs:
           supermodel-api-key: ${{ secrets.SUPERMODEL_API_KEY }}
           base-url: /vue/
 
+      - name: Install wrangler
+        run: npm install -g wrangler@3
+
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy ./arch-docs-output --project-name=gtd-vue --branch=main
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: wrangler pages deploy ./arch-docs-output --project-name=gtd-vue --branch=main
